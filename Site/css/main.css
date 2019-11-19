@@ -10,6 +10,21 @@ body {
   height: 100%;
 }
 
+p, a, label, button, h1, h2, h3, h4, h5, input {
+  color: #f2f2f2;
+}
+
+h3 {
+  font-size: x-large;
+  text-align: center;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin: 1em 0 0.3em 0;
+  font-size: larger;
+}
 
 nav {
   overflow: hidden;
@@ -25,14 +40,22 @@ nav {
 }
 
 nav a {
-  color: #f2f2f2;
+  display: flex;
   text-align: center;
   text-decoration: none;
-  font-size: 17px;
+  text-transform: capitalize;
+  font-size: 1.2em;
   margin: auto;
-  padding: 14px 16px;
-  align-self: center;
+  padding: 0 1.3em 0 1.3em;
   height: 100%;
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.verticalRealAlign {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 nav a:hover {
@@ -44,9 +67,10 @@ section {
   height: 100%;
   display: flex;
 }
+
 section .bgImage {
   position: fixed;
-  filter: blur(3px);
+  filter: blur(3px) brightness(0.4);
   background-image: url("../images/amphi.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,6 +78,7 @@ section .bgImage {
   width: 100%;
   z-index: -1;
 }
+
 section .textDiv {
   position: fixed;
   top: 28%;
@@ -62,13 +87,13 @@ section .textDiv {
   left: 0%;
   text-align: center;
 }
+
 section .textDiv p {
   display: inline;
   padding: 15px 20px 15px 20px;
   border-radius: 5px;
   text-align: center;
   font-size: 2em;
-  color: white;
   background-color: rgb(37, 37, 37);
 }
 
@@ -97,17 +122,72 @@ section div.buttons button {
   border-color: #df1313;
   outline: 3px solid #df1313;
   border-width: 10px;
+  cursor: pointer;
   border-style: outset inset inset outset;
   border-color: #fe6a5b #fe6a5b #fe3b27 #fe3b27;
-
   transition: all 0.5s ease-out;
   -webkit-transition: all 0.5s ease-out;
 }
+
 section div.buttons button:hover {
   transform: translate(0, -5px);
 }
+
 section div.buttons button:active {
-  border-color: #fe3b27 #fe3b27 #fe6a5b #fe6a5b ;
+  border-color: #fe3b27 #fe3b27 #fe6a5b #fe6a5b;
   transition: all 0.01s ease-out;
   -webkit-transition: all 0.01s;
+}
+
+.tabLeft, .tabRight {
+  border-radius: 19px;
+  background-color: #303030;
+}
+
+input {
+  background-color: #595959;
+  border-radius: 5px;
+  padding: 5px;
+  width: 240px;
+  border: none;
+}
+
+div.search {
+  display: flex;
+  justify-content: space-evenly; 
+  top: 20%;
+  width: 100%;
+  height: min-content;
+  position: relative;
+
+}
+
+div.tabLeft {
+  display: block;
+
+}
+div.tabRight {
+  display: block;
+  height: 400px;
+  width: 800px;
+}
+
+div.search form {
+  padding: 10px 15px 15px 15px;
+}
+
+div.search form .submit {
+  background-color: rgb(56, 122, 197);
+  padding: 5px 10px 5px 10px;
+  margin: auto;
+  margin-top: 10px;
+  display: block;
+  border: none;
+  font-size: larger;
+  border-radius: 3px;
+}
+
+#mapid {
+  height: 100%;
+  border-radius: inherit;
 }
