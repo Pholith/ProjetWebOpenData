@@ -1,11 +1,15 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url("../images/amphi.jpg");
-  background-repeat: no-repeat;
-  background-attachment: local;
-  
+  width: 100%;
+  height: 100%;
 }
+
 
 nav {
   overflow: hidden;
@@ -14,6 +18,10 @@ nav {
   align-items: stretch;
   justify-content: space-evenly;
   vertical-align: middle;
+  position: fixed;
+  height: 4em;
+  width: 100%;
+  z-index: 1;
 }
 
 nav a {
@@ -21,6 +29,7 @@ nav a {
   text-align: center;
   text-decoration: none;
   font-size: 17px;
+  margin: auto;
   padding: 14px 16px;
   align-self: center;
   height: 100%;
@@ -30,17 +39,75 @@ nav a:hover {
   background-color: #ddd;
   color: black;
 }
-/*
-nav a.active {
-  background-color: rgb(21, 92, 173);
-  color: white;
-  display: block;
-  padding-top: auto;
-  padding-bottom: auto;
-}*/
-
 
 section {
+  height: 100%;
+  display: flex;
+}
+section .bgImage {
+  position: fixed;
+  filter: blur(3px);
   background-image: url("../images/amphi.jpg");
-  background-repeat: repeat;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+section .textDiv {
+  position: fixed;
+  top: 28%;
+  height: 20px;
+  width: 100%;
+  left: 0%;
+  text-align: center;
+}
+section .textDiv p {
+  display: inline;
+  padding: 15px 20px 15px 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 2em;
+  color: white;
+  background-color: rgb(37, 37, 37);
+}
+
+section .buttons {
+  /*background-color: lightcoral;*/
+  position: fixed;
+  top: 55%;
+  height: 20px;
+  width: 100%;
+  left: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+section div.buttons button {
+  display: inline-block;
+  padding: 5px 10px 5px 10px;
+  border-radius: 1px;
+  text-align: center;
+  font-size: 1.1em;
+  color: black;
+  width: 190px;
+  height: 80px;
+  background-color: #fe3b27;
+  border-color: #df1313;
+  outline: 3px solid #df1313;
+  border-width: 10px;
+  border-style: outset inset inset outset;
+  border-color: #fe6a5b #fe6a5b #fe3b27 #fe3b27;
+
+  transition: all 0.5s ease-out;
+  -webkit-transition: all 0.5s ease-out;
+}
+section div.buttons button:hover {
+  transform: translate(0, -5px);
+}
+section div.buttons button:active {
+  border-color: #fe3b27 #fe3b27 #fe6a5b #fe6a5b ;
+  transition: all 0.01s ease-out;
+  -webkit-transition: all 0.01s;
 }
