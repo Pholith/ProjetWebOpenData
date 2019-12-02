@@ -13,8 +13,8 @@
 <body>
 
     <nav>
-        <a class="active" href="index.html"> <span class="verticalRealAlign"> accueil </span></a>
-        <a href="search.html"> <span class="verticalRealAlign"> établissements <br/> par diplôme </span> </a>
+        <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
+        <a href="search.php"> <span class="verticalRealAlign"> établissements <br/> par diplôme </span> </a>
         <a> <span class="verticalRealAlign"> universités <br/>par localisastion </span> </a>
     </nav>
     <section>
@@ -29,7 +29,6 @@
     </section>
 
     <footer>
-        
     </footer>
 </body>
 

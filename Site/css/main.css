@@ -10,7 +10,7 @@ body {
   height: 100%;
 }
 
-p, a, label, button, h1, h2, h3, h4, h5, input {
+*, p, a, label, button, h1, h2, h3, h4, h5, input {
   color: #f2f2f2;
 }
 
@@ -190,4 +190,14 @@ div.search form .submit {
 #mapid {
   height: 100%;
   border-radius: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 2px 15px 2px 15px;
+}
+td, th{
+  font-size: small;
+  border: white solid 1px;
+  padding: 0;
 }
