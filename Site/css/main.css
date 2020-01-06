@@ -201,3 +201,7 @@ td, th{
   border: white solid 1px;
   padding: 0;
 }
+
+.leaflet-popup-content {
+  color: black;
+}
