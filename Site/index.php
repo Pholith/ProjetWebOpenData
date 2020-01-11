@@ -14,17 +14,16 @@
 
     <nav>
         <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
-        <a href="search.php"> <span class="verticalRealAlign"> établissements <br/> par diplôme </span> </a>
-        <a> <span class="verticalRealAlign"> universités <br/>par localisastion </span> </a>
+        <a href="search.php"> <span class="verticalRealAlign"> Recherche </span> </a>
     </nav>
     <section>
-        <div class="textDiv"> <p>Je cherche une formation ... </p> </div>
+        <div class="textDiv"> <p> Je cherche une formation ... </p> </div>
         <div class="bgImage"> </div>
 
         <div class="buttons">
-            <button> Après le bac </button>
-            <button> Après un diplôme <br/> bac+2 ou bac+3 </button>
-            <button> Après un diplôme <br/> bac+5 </button>
+            <button> <a href="search.php?years=1ère+année"> Après le bac </a> </button>
+            <button> <a href="search.php?years=4ème+année"> Après un diplôme <br/> bac+3 </a> </button>
+            <button> <a href="search.php?years=6ème+année"> Après un diplôme <br/> bac+5 </a> </button>
         </div>
     </section>
 

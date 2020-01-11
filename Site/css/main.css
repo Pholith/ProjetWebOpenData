@@ -36,7 +36,7 @@ nav {
   position: fixed;
   height: 4em;
   width: 100%;
-  z-index: 1;
+  z-index: 10000;
 }
 
 nav a {
@@ -138,6 +138,10 @@ section div.buttons button:active {
   transition: all 0.01s ease-out;
   -webkit-transition: all 0.01s;
 }
+section .buttons a {
+  color: black;
+  text-decoration: none;
+}
 
 .tabLeft, .tabRight {
   border-radius: 19px;
@@ -161,6 +165,13 @@ div.search {
   position: relative;
 
 }
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 
 div.tabLeft {
   display: block;
@@ -191,15 +202,22 @@ div.search form .submit {
   height: 100%;
   border-radius: inherit;
 }
+section .divTable {
+  margin-top: 13em;
+  margin-bottom: 3em;
+}
 
 table {
   border-collapse: collapse;
   margin: 2px 15px 2px 15px;
+  width: 95%;
+  text-align: center;
 }
 td, th{
+  text-align: center;
   font-size: small;
   border: white solid 1px;
-  padding: 0;
+  padding: 3px;
 }
 
 .leaflet-popup-content {

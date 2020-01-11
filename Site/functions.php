@@ -25,7 +25,7 @@ function jsWrite($str) {
 function getCoordonatesFromINSEE(string $insee)
 {
 
-    global $arrayINSEE; // Stoque les valeurs déjà lu pour ne pas refaire des requetes
+    global $arrayINSEE; // Stock les valeurs déjà lues pour ne pas refaire des requetes (il y a une limite de requête par seconde)
     if ($arrayINSEE == null) $arrayINSEE = [];
 
     $array = [];
@@ -48,8 +48,7 @@ function build_table($array){
     $html = '<table>';
     // header row
     $html .= '<tr>';
-    console_log($array);
-    foreach($array[0]->fields as $key=>$value) {
+    foreach($array[0] as $key=>$value) {
             $html .= '<th>' . htmlspecialchars($key) . '</th>';
         }
     $html .= '</tr>';
@@ -58,19 +57,17 @@ function build_table($array){
     foreach( $array as $key=>$value){
         $html .= '<tr>';
         // ->fields ici pour accéder à tous les champs de l'objet js
-        foreach($value->fields as $key2=>$value2){
+        foreach($value as $key2=>$value2){
             $html .= '<td>' . htmlspecialchars($value2) . '</td>';
         }
         $html .= '</tr>';
     }
-
     // finish table and return it
-
     $html .= '</table>';
     return $html;
 }
 
-function build_table2($array){
+function build_tableOLD($array){
     // start table
     $html = '<table>';
     // header row
