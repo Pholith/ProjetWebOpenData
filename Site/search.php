@@ -2,9 +2,9 @@
     include("functions.php");
 
     // Facets voulu
-    $facets = ["discipline_lib", "sect_disciplinaire_lib",
-    "diplome", "reg_etab_lib",
+    $facets = ["discipline_lib", "diplome", "sect_disciplinaire_lib", "reg_etab_lib",
     "etablissement_lib", "niveau_lib", "com_ins"];
+    sort($facets); // trie les facets par ordre alphabetique
     // Lien de base du site
     $baseLink = "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics";
     
@@ -51,7 +51,11 @@
                 
                 // Envoie une requete pour obtenir uniquement les valeurs des facets pour remplir les datalist
                 $groups = json_decode(file_get_contents($link))->facet_groups;
-                
+                // trie les facets par ordre alphabetique
+                usort($groups, function($a,$b) {
+                    return strcmp($a->name, $b->name);
+                });
+
                 ?>
                 <form action="" method="get">
                     <h3> Filtres </h3>
@@ -70,6 +74,7 @@
                     <input list="diplome" name="diplome" value="<?php if (isset($_GET["diplome"])) echo $_GET["diplome"]?>">
                     <datalist id="diplome">
                     <?php 
+
                         $key = array_search("diplome", $facets);
                         foreach ($groups[$key]->facets as $key => $value) {
                             echo "<option value=\"".$value->name."\"></option>";
