@@ -223,3 +223,11 @@ td, th{
 .leaflet-popup-content {
   color: black;
 }
+
+.error {
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: red;
+  text-align: center;
+}
