@@ -1,27 +1,8 @@
 <?php
 
-/**
- * Permet d'afficher des variables php dans la console javascript intégré
- */
-function console_log($data) {
-    $output = json_encode($data);
-    echo "<script>console.log(" . $output . ");</script>";
-}
-
-function addToLink(string $url, string $toadd)
-{
-    return $url .= "&" .$toadd;
-}
-
-/**
- * Ecrit des scripts js
- */
-function jsWrite($str) {
-    echo "<script> " . $str . "</script>";
-}
-
 // code from https://stackoverflow.com/questions/2280394/how-can-i-check-if-a-url-exists-via-php
-function getHttpResponseCode($url, $followredirects = true){
+function getHttpResponseCode($url, $followredirects = true)
+{
     if(! $url || ! is_string($url)){
         return false;
     }
@@ -120,5 +101,3 @@ function build_tableOLD($array){
     $html .= '</table>';
     return $html;
 }
-
-?>

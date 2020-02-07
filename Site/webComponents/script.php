@@ -8,5 +8,5 @@
         accessToken: 'pk.eyJ1IjoicGhvbGl0aCIsImEiOiJjazM2MWljNDUxMWtyM2JueXNxOWo1MGF0In0.8eR0bt3PfFACQDq2CELQPA'
     }).addTo(mymap);
 
-    <?php echo $jsToWrite; ?>
+    <?php echo JSManager::returnAndReset(); ?>
 </script>
