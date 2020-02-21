@@ -63,11 +63,6 @@ nav a:hover {
   color: black;
 }
 
-section {
-  height: 100%;
-  display: flex;
-}
-
 section .bgImage {
   position: fixed;
   filter: blur(3px) brightness(0.4);
@@ -167,6 +162,7 @@ div.search {
 }
 
 section {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -212,6 +208,7 @@ table {
   margin: 2px 15px 2px 15px;
   width: 95%;
   text-align: center;
+  margin-bottom: 5em;
 }
 td, th{
   text-align: center;
@@ -229,5 +226,18 @@ td, th{
   padding: 10px;
   border-radius: 5px;
   background-color: red;
+  text-align: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: rgb(56, 122, 197);
+  color: white;
   text-align: center;
 }

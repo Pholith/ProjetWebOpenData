@@ -1,8 +1,6 @@
 <?php
-include("php/functions.php");
-include("php/Application.php");
-include("php/JSManager.php");
-
+include_once "php/Application.php";
+include_once "php/logger.php";
 
 ////// TEST L'ACCESSIBILITE DU LIEN
 
@@ -97,7 +95,6 @@ if (!$error) {
     include("webComponents/head.php");
     include("webComponents/body.php");
     include("webComponents/script.php");
-    include("webComponents/footer.php");
 }
 ?>
 

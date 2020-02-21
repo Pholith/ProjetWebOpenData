@@ -1,3 +1,7 @@
+<?php
+include_once "php/logger.php";
+?>
+
 <!DOCTYPE html>
 <html lang="FR">
 
@@ -23,9 +27,8 @@ include("webComponents/head.php");
             <button> <a href="search.php?years=6ème+année"> Après un diplôme <br /> bac+5 </a> </button>
         </div>
     </section>
+    <?php include("webComponents/footer.php"); ?>
 
-    <footer>
-    </footer>
 </body>
 
 </html>
