@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Parameter` (
   `name` VARCHAR(200) NOT NULL,
   `Request_idRequest` INT NOT NULL,
   PRIMARY KEY (`idParameter`, `Request_idRequest`),
-  INDEX `fk_Parameter_Request_idx` (`Request_idRequest` ASC) VISIBLE,
+  INDEX `fk_Parameter_Request_idx` (`Request_idRequest` ASC),
   CONSTRAINT `fk_Parameter_Request`
     FOREIGN KEY (`Request_idRequest`)
     REFERENCES `mydb`.`Request` (`idRequest`)

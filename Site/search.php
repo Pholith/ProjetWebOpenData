@@ -44,7 +44,7 @@ if (isset($_GET["rows"])) {
     $rows = 100;
 }
 $dataLink .= "&rows=" . $rows;
-if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome=" .                 $_GET["diplome"];
+if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome_lib=" .             $_GET["diplome"];
 if (isset($_GET["loc"])     && $_GET["loc"] != "")      $dataLink .= "&refine.reg_etab_lib=" .            $_GET["loc"];
 if (isset($_GET["domaine"]) && $_GET["domaine"] != "")  $dataLink .= "&refine.sect_disciplinaire_lib=" .  $_GET["domaine"];
 if (isset($_GET["years"])   && $_GET["years"] != "")    $dataLink .= "&refine.niveau_lib=" .              $_GET["years"];
@@ -54,7 +54,6 @@ console_log("Fetching datalink...\n" . $dataLink);
 //geofilter.distance=48.5%2C48.5%2C1000  filtre les écoles à 1km
 $text = json_decode(file_get_contents($dataLink));
 //console_log($text->records);
-
 foreach ($text->records as $key => $value) {
     $id = $value->fields->com_ins;
     if ($id) {
@@ -77,7 +76,7 @@ $readyToPrintTable = [];
 foreach ($text->records as $key1 => $value) {
     $newSubArray = [];
     foreach ($value->fields as $key2 => $value) {
-        if ($key2 != "com_ins") {
+        if ($key2 != "com_ins") { // retire cette colonne inutile
             $newSubArray[$key2] = $value;
         }
     }

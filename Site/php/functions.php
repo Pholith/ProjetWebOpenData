@@ -55,9 +55,41 @@ function getCoordonatesFromINSEE(string $insee)
     return $array;
 }
 
-function build_table($array){
+function build_chart1($map, String $titleCol1 = "", String $titleCol2 = "") : String
+{
+    $maxFromTheMap = 0;
+    foreach ($map as $value) {
+        $maxFromTheMap = max($maxFromTheMap, $value);
+    }
+    $coefficient = 300 / $maxFromTheMap;
+
+    $result = "
+    <table class='chart' cellspacing='0' cellpadding='0' >
+      <tr>
+        <th scope='col'><span class='auraltext'>" . $titleCol1 . "</span> </th>
+        <th scope='col'><span class='auraltext'>" . $titleCol2 . "</span> </th>
+      </tr> ";
+    
+    foreach ($map as $key => $value) {
+        $result .= "
+        <tr>
+          <td class='first'>" . $key . "</td>
+          <td class='value first'><img src='/images/bar.png' alt='' width='" . $value * $coefficient. "' height='16' />". $value . "</td>
+        </tr>
+        ";
+    }
+
+    $result .= "
+    </table>
+    ";
+    return $result;
+    
+}
+
+function build_table($array) : String {
+    if (sizeof($array) < 1) return "";
     // start table
-    $html = '<table>';
+    $html = '<table class="results">';
     // header row
     $html .= '<tr>';
     foreach($array[0] as $key=>$value) {
@@ -79,7 +111,7 @@ function build_table($array){
     return $html;
 }
 
-function build_tableOLD($array){
+function build_tableOLD($array) : String {
     // start table
     $html = '<table>';
     // header row

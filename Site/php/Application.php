@@ -1,6 +1,8 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=1); // Oblige la déclaration strictement typé des champs etc. (Ne marche qu'en php7.4 je crois)
 
+
+///////// Centralisation des imports
 // Utilitaires
 include_once "functions.php";
 include_once "JSManager.php";
@@ -60,7 +62,7 @@ class Application
     //Associe chaque facet à une chaine lisible
     public const FACETS_STRINGS = [
         "discipline_lib" => "Discipline",
-        "diplome" => "Diplôme",
+        "diplome_lib" => "Diplôme",
         "sect_disciplinaire_lib" => "Secteur disciplinaire",
         "reg_etab_lib" => "",
         "etablissement_lib" => "",
@@ -72,24 +74,27 @@ class Application
     public function init()
     {
         $this->FACETS = [
-            "discipline_lib", "diplome", "sect_disciplinaire_lib", "reg_etab_lib",
+            "discipline_lib", "diplome_lib", "sect_disciplinaire_lib", "reg_etab_lib",
             "etablissement_lib", "niveau_lib", "com_ins"
         ];
         sort($this->FACETS);
 
-
         try {
             // Connection à la bdd 
-            include_once "Connection/config.php";
+            include_once "config.php";
             $this->bd = new PDO($host, $user, $pass);
             $this->bd->exec('SET NAMES utf8');
             console_log("Database connection success.");
             
         } catch (Exception $e) {
+            console_logOLD($e);
             die("Connection impossible à la base de données.");
         }
     }
 
+    public function getFacets() {
+        return $this->FACETS;
+    }
 
     public function createDatalistAPILink(): string
     {
@@ -142,4 +147,23 @@ class Application
             console_logOLD($this->bd->errorInfo());
         }
     }
+
+    public function selectGroupedParameters(String $parameterName) {
+        $statement = $this->bd->prepare("select value as ?, count(value) as nbr from mydb.parameter where name =? group by value order by nbr desc;");
+        $statement->execute(array($parameterName, $parameterName));
+        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
+    public function selectRequestsByDate() {
+        $statement = $this->bd->prepare("select time as date, count(time) as units from mydb.request where request.time != 'NULL' group by time order by time desc;");
+        $statement->execute([]);
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /*
+    utile pour modifier les settings qui bloquent le group by
+    set global sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+    set session sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
+    */
 }

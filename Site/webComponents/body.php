@@ -3,8 +3,8 @@
         <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
         <a href="search.php"> <span class="verticalRealAlign"> Recherche </span> </a>
     </nav>
-    <section>
         <div class="bgImage"></div>
+    <section>
 
         <div class="search">
             <div class="tabLeft">
@@ -15,7 +15,7 @@
                     <input list="domaine" name="domaine" value="<?php if (isset($_GET["domaine"])) echo $_GET["domaine"] ?>">
                     <datalist id="domaine">
                         <?php
-                        $key = array_search("sect_disciplinaire_lib", $facets);
+                        $key = array_search("sect_disciplinaire_lib", Application::getInstance()->getFacets());
                         foreach ($groups[$key]->facets as $key => $value) {
                             echo "<option value=\"" . $value->name . "\"></option>";
                         }
@@ -26,8 +26,7 @@
                     <input list="diplome" name="diplome" value="<?php if (isset($_GET["diplome"])) echo $_GET["diplome"] ?>">
                     <datalist id="diplome">
                         <?php
-
-                        $key = array_search("diplome", $facets);
+                        $key = array_search("diplome_lib", Application::getInstance()->getFacets());
                         foreach ($groups[$key]->facets as $key => $value) {
                             echo "<option value=\"" . $value->name . "\"></option>";
                         }
@@ -38,7 +37,7 @@
                     <input list="loc" name="loc" value="<?php if (isset($_GET["loc"])) echo $_GET["loc"] ?>">
                     <datalist id="loc">
                         <?php
-                        $key = array_search("reg_etab_lib", $facets);
+                        $key = array_search("reg_etab_lib", Application::getInstance()->getFacets());
                         foreach ($groups[$key]->facets as $key => $value) {
                             echo "<option value=\"" . $value->name . "\"></option>";
                         }
@@ -50,7 +49,7 @@
                     <input list="years" name="years" value="<?php if (isset($_GET["years"])) echo $_GET["years"] ?>">
                     <datalist id="years">
                         <?php
-                        $key = array_search("niveau_lib", $facets);
+                        $key = array_search("niveau_lib", Application::getInstance()->getFacets());
                         foreach ($groups[$key]->facets as $key => $value) {
                             echo "<option value=\"" . $value->name . "\"></option>";
                         }

@@ -15,11 +15,11 @@ include("webComponents/head.php");
         <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
         <a href="search.php"> <span class="verticalRealAlign"> Recherche </span> </a>
     </nav>
+    <div class="bgImage"> </div>
     <section>
         <div class="textDiv">
             <p> Je cherche une formation ... </p>
         </div>
-        <div class="bgImage"> </div>
 
         <div class="buttons">
             <button> <a href="search.php?years=1ère+année"> Après le bac </a> </button>

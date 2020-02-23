@@ -32,7 +32,8 @@ class Request {
     }
 
     public function generateInsertSQL() : String {
-        return "insert into request (`navigator`,`fromUrl`) VALUES ('',".$this->fromURL.");";
+        $date = new DateTime();
+        return "insert into request (navigator, fromUrl, time) VALUES ('','".$this->fromURL."', '".$date->format("Y-m-d")."');";
     }
     public function generateParametersSQL(String $id) : String {
         $req = "";

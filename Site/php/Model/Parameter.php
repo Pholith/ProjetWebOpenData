@@ -12,9 +12,9 @@ class Parameter {
 
     public function __construct(String $name, String $value, String $type)
     {
-        $this->$name = $name;
-        $this->$value = $value;
-        $this->$type = $type;
+        $this->name = $name;
+        $this->value = $value;
+        $this->type = $type;
     }
 
     public function getType() : String {
@@ -29,8 +29,8 @@ class Parameter {
 
     public function generateInsertSQL(String $id) : String
     {
-        return "insert into parameter (`type`, `value`, `name`, `Request_idRequest`) VALUES
-        (\"".$this->type."\",  \"".$this->value."\",  \"".$this->name."\">, \"".$id."\");";
+        return "insert into parameter (type, value, name, Request_idRequest) VALUES
+        ('".$this->type."',  '".$this->value."',  '".$this->name."', '".$id."');";
     }
 }
 

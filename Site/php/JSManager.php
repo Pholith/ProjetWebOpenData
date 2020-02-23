@@ -25,15 +25,6 @@ class JSManager
     }
 }
 
-// Permet d'avoir la syntaxe console::log
-class console
-{
-    public static function log($object)
-    {
-        JSManager::console_log($object);
-    }
-}
-
 
 // Fonction pour rajouter le javascript plus rapidement
 function console_log($object)
