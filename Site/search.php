@@ -8,7 +8,7 @@ $error = false;
 // Effectue un test sur le lien de l'api
 if (getHttpResponseCode(Application::BASE_API_LINK) != 200) {
     console_log("erreur du lien ou de l'api !");
-    echo "<h1 class=\"error\"> Impossible d'accéder aux api de data.gouv.fr </h1>";
+    echo "<h1 class=\"error\"> Impossible d'accéder aux APIs de <a href='https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics/information/'> data.gouv.fr </a> </h1>";
     $error = true;
 }
 
@@ -30,60 +30,59 @@ if (!$error) {
             return strcmp($a->name, $b->name);
         });
     }
-}
 
 
-/////// PREPARE LES DONNEES ET LA CARTE
+
+    /////// PREPARE LES DONNEES ET LA CARTE
 
 
-$dataLink = Application::getInstance()->createDataAPILink();
-// établie une limite de 100 lignes par défaut
-if (isset($_GET["rows"])) {
-    $rows = $_GET["rows"];
-} else {
-    $rows = 100;
-}
-$dataLink .= "&rows=" . $rows;
-if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome_lib=" .             $_GET["diplome"];
-if (isset($_GET["loc"])     && $_GET["loc"] != "")      $dataLink .= "&refine.reg_etab_lib=" .            $_GET["loc"];
-if (isset($_GET["domaine"]) && $_GET["domaine"] != "")  $dataLink .= "&refine.sect_disciplinaire_lib=" .  $_GET["domaine"];
-if (isset($_GET["years"])   && $_GET["years"] != "")    $dataLink .= "&refine.niveau_lib=" .              $_GET["years"];
-
-console_log("Fetching datalink...\n" . $dataLink);
-
-//geofilter.distance=48.5%2C48.5%2C1000  filtre les écoles à 1km
-$text = json_decode(file_get_contents($dataLink));
-//console_log($text->records);
-foreach ($text->records as $key => $value) {
-    $id = $value->fields->com_ins;
-    if ($id) {
-        // Ecrit à partir des données le code javascript pour utiliser l'API OpenStreetMap
-        $coordinates = getCoordonatesFromINSEE($id);
-        if ($coordinates[0] != null && $coordinates[1] != null)
-            JSManager::addJs("L.marker([" . $coordinates[1] . ", " . $coordinates[0] . "]).addTo(mymap).bindPopup(\"" . $value->fields->sect_disciplinaire_lib . "\").openPopup();");
+    $dataLink = Application::getInstance()->createDataAPILink();
+    // établie une limite de 100 lignes par défaut
+    if (isset($_GET["rows"])) {
+        $rows = $_GET["rows"];
+    } else {
+        $rows = 100;
     }
-}
+    $dataLink .= "&rows=" . $rows;
+    if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome_lib=" .             $_GET["diplome"];
+    if (isset($_GET["loc"])     && $_GET["loc"] != "")      $dataLink .= "&refine.reg_etab_lib=" .            $_GET["loc"];
+    if (isset($_GET["domaine"]) && $_GET["domaine"] != "")  $dataLink .= "&refine.sect_disciplinaire_lib=" .  $_GET["domaine"];
+    if (isset($_GET["years"])   && $_GET["years"] != "")    $dataLink .= "&refine.niveau_lib=" .              $_GET["years"];
 
+    console_log("Fetching datalink...\n" . $dataLink);
 
-//////// PREPARE LE TABLEAU 
-
-// Simplifie et filtre la colonne inutile à l'utilisateur de com_ins
-//$urlFullRows = (strpos($_SERVER['HTTP_REFERER'], "&rows=") != -1) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_REFERER'] . "&rows=-1" ;
-$readyToPrintNHits = "<h3> " . $text->nhits . " résultats </h3>";
-
-$readyToPrintTable = [];
-
-foreach ($text->records as $key1 => $value) {
-    $newSubArray = [];
-    foreach ($value->fields as $key2 => $value) {
-        if ($key2 != "com_ins") { // retire cette colonne inutile
-            $newSubArray[$key2] = $value;
+    //geofilter.distance=48.5%2C48.5%2C1000  filtre les écoles à 1km
+    $text = json_decode(file_get_contents($dataLink));
+    //console_log($text->records);
+    foreach ($text->records as $key => $value) {
+        $id = $value->fields->com_ins;
+        if ($id) {
+            // Ecrit à partir des données le code javascript pour utiliser l'API OpenStreetMap
+            $coordinates = getCoordonatesFromINSEE($id);
+            if ($coordinates[0] != null && $coordinates[1] != null)
+                JSManager::addJs("L.marker([" . $coordinates[1] . ", " . $coordinates[0] . "]).addTo(mymap).bindPopup(\"" . $value->fields->sect_disciplinaire_lib . "\").openPopup();");
         }
     }
-    $readyToPrintTable[$key1] = $newSubArray;
+
+
+    //////// PREPARE LE TABLEAU 
+
+    // Simplifie et filtre la colonne inutile à l'utilisateur de com_ins
+    //$urlFullRows = (strpos($_SERVER['HTTP_REFERER'], "&rows=") != -1) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_REFERER'] . "&rows=-1" ;
+    $readyToPrintNHits = "<h3> " . $text->nhits . " résultats </h3>";
+
+    $readyToPrintTable = [];
+    foreach ($text->records as $key1 => $value) {
+        $newSubArray = [];
+        foreach ($value->fields as $key2 => $value) {
+            if ($key2 != "com_ins") { // retire cette colonne inutile
+                $newSubArray[$key2] = $value;
+            }
+        }
+        $readyToPrintTable[$key1] = $newSubArray;
+    }
+
 }
-
-
 ?>
 
 <!DOCTYPE html>

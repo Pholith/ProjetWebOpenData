@@ -1,11 +1,11 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title> SiteWebOpenData </title>
+    <title> FormationFinder </title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     
     <!-- <meta name="identifier-url" content="http://www.myfutururl.com/" /> -->
-    <meta name="title" content="ProjectWebOpenData" />
+    <meta name="title" content="FormationFinder" />
     <meta name="description" content="Site de recherche des universités françaises" />
     <meta name="abstract" content="Site de recherche des universités françaises" />
     <meta name="keywords" content="open data, recherche, universités, études" />

@@ -54,8 +54,7 @@ class Application
 
     // APPLICATION BODY
 
-
-    public const BASE_API_LINK = "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics";
+    public const BASE_API_LINK = "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics&apikey=f379dcd3781832ae80d64c9c6039fbaafbcd44ff46dc2537c6eb2295";
 
     private $FACETS;
     private $bd;
@@ -64,18 +63,18 @@ class Application
         "discipline_lib" => "Discipline",
         "diplome_lib" => "Diplôme",
         "sect_disciplinaire_lib" => "Secteur disciplinaire",
-        "reg_etab_lib" => "",
-        "etablissement_lib" => "",
-        "niveau_lib" => "",
+        "reg_etab_lib" => "Région",
+        "etablissement_lib" => "Etablissement",
+        "niveau_lib" => "Année d'étude",
         "com_ins" => "",
-
+        "element_wikidata" => "Lien"
     ];
 
     public function init()
     {
         $this->FACETS = [
             "discipline_lib", "diplome_lib", "sect_disciplinaire_lib", "reg_etab_lib",
-            "etablissement_lib", "niveau_lib", "com_ins"
+            "etablissement_lib", "niveau_lib", "com_ins", "element_wikidata"
         ];
         sort($this->FACETS);
 
@@ -106,7 +105,6 @@ class Application
         $link .= "&rows=0";
         return $link;
     }
-
 
     public function createDataAPILink(): string
     {
@@ -160,6 +158,20 @@ class Application
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function insertUniversityClick($link)
+    {
+        $request = "insert into mydb.clicked_link (date, link) values ('".$this->getFormatedDate() ."','".$link."');";
+        if (!$this->bd->query($request)) {
+            console_logOLD($request);
+            console_logOLD($this->bd->errorInfo());
+        }
+    }
+
+    public function getFormatedDate() : String
+    {
+        return Date("Y-m-j");
+    }
+    
     /*
     utile pour modifier les settings qui bloquent le group by
     set global sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';

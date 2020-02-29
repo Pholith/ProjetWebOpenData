@@ -45,7 +45,7 @@ $yearsMap = Application::getInstance()->selectGroupedParameters("years");
                         animationEnabled: true,
                         theme: "light2",
                         title: {
-                            text: "Requêtes sur le temps"
+                            text: "Requêtes"
                         },
                         axisX: {
                             valueFormatString: "DD MMM YYYY",
