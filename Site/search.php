@@ -1,6 +1,5 @@
 <?php
 include_once "php/Application.php";
-include_once "php/logger.php";
 
 ////// TEST L'ACCESSIBILITE DU LIEN
 
@@ -34,54 +33,96 @@ if (!$error) {
 
 
     /////// PREPARE LES DONNEES ET LA CARTE
+    if (isset($_GET["years"])) { // Ne fait des recherches que si le bouton a été cliqué
+        include_once "php/logger.php";
 
-
-    $dataLink = Application::getInstance()->createDataAPILink();
-    // établie une limite de 100 lignes par défaut
-    if (isset($_GET["rows"])) {
-        $rows = $_GET["rows"];
-    } else {
-        $rows = 100;
-    }
-    $dataLink .= "&rows=" . $rows;
-    if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome_lib=" .             $_GET["diplome"];
-    if (isset($_GET["loc"])     && $_GET["loc"] != "")      $dataLink .= "&refine.reg_etab_lib=" .            $_GET["loc"];
-    if (isset($_GET["domaine"]) && $_GET["domaine"] != "")  $dataLink .= "&refine.sect_disciplinaire_lib=" .  $_GET["domaine"];
-    if (isset($_GET["years"])   && $_GET["years"] != "")    $dataLink .= "&refine.niveau_lib=" .              $_GET["years"];
-
-    console_log("Fetching datalink...\n" . $dataLink);
-
-    //geofilter.distance=48.5%2C48.5%2C1000  filtre les écoles à 1km
-    $text = json_decode(file_get_contents($dataLink));
-    //console_log($text->records);
-    foreach ($text->records as $key => $value) {
-        $id = $value->fields->com_ins;
-        if ($id) {
-            // Ecrit à partir des données le code javascript pour utiliser l'API OpenStreetMap
-            $coordinates = getCoordonatesFromINSEE($id);
-            if ($coordinates[0] != null && $coordinates[1] != null)
-                JSManager::addJs("L.marker([" . $coordinates[1] . ", " . $coordinates[0] . "]).addTo(mymap).bindPopup(\"" . $value->fields->sect_disciplinaire_lib . "\").openPopup();");
+        $dataLink = Application::getInstance()->createDataAPILink();
+        // établie une limite de 100 lignes par défaut
+        if (isset($_GET["rows"])) {
+            $rows = $_GET["rows"];
+        } else {
+            $rows = 50;
         }
-    }
+        $dataLink .= "&rows=" . $rows;
+        if (isset($_GET["diplome"]) && $_GET["diplome"] != "")  $dataLink .= "&refine.diplome_lib=" .             $_GET["diplome"];
+        if (isset($_GET["loc"])     && $_GET["loc"] != "")      $dataLink .= "&refine.reg_etab_lib=" .            $_GET["loc"];
+        if (isset($_GET["domaine"]) && $_GET["domaine"] != "")  $dataLink .= "&refine.sect_disciplinaire_lib=" .  $_GET["domaine"];
+        if (isset($_GET["years"])   && $_GET["years"] != "")    $dataLink .= "&refine.niveau_lib=" .              $_GET["years"];
 
+        console_log("Fetching datalink...\n" . $dataLink);
 
-    //////// PREPARE LE TABLEAU 
+        //geofilter.distance=48.5%2C48.5%2C1000  filtre les écoles à 1km
+        $text = json_decode(file_get_contents($dataLink));
+        //console_log($text->records);
 
-    // Simplifie et filtre la colonne inutile à l'utilisateur de com_ins
-    //$urlFullRows = (strpos($_SERVER['HTTP_REFERER'], "&rows=") != -1) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_REFERER'] . "&rows=-1" ;
-    $readyToPrintNHits = "<h3> " . $text->nhits . " résultats </h3>";
-
-    $readyToPrintTable = [];
-    foreach ($text->records as $key1 => $value) {
-        $newSubArray = [];
-        foreach ($value->fields as $key2 => $value) {
-            if ($key2 != "com_ins") { // retire cette colonne inutile
-                $newSubArray[$key2] = $value;
+        JSManager::addJs("
+        let popup;
+        let markerArray = [];
+        let marker;");
+        foreach ($text->records as $key => $value) {
+            $id = $value->fields->com_ins;
+            if ($id) {
+                // Ecrit à partir des données le code javascript pour utiliser l'API OpenStreetMap
+                $coordinates = getCoordonatesFromINSEE($id);
+                $url = Application::getInstance()->getEtablismentURL($value->fields->etablissement);
+                if ($coordinates[0] != null && $coordinates[1] != null) {
+                    JSManager::addJs("
+                    popup = L.popup()
+                    .setContent(`<p>" . $value->fields->sect_disciplinaire_lib . "</p>");
+                    if ($url !=  "") {
+                        JSManager::addJs("<a href=\"" . Application::getInstance()->getLoggerLink($url) . "\"> " . $value->fields->etablissement_lib . "</a>");
+                    }
+                    JSManager::addJs("`);
+                    marker = L.marker([" . $coordinates[1] . ", " . $coordinates[0] . "]);
+                    marker.bindPopup(popup);
+                    markerArray.push(marker);
+                    ");
+                }
             }
         }
-        $readyToPrintTable[$key1] = $newSubArray;
-    }
+        JSManager::addJs("
+        var group = L.featureGroup(markerArray).addTo(mymap);
+        mymap.fitBounds(group.getBounds());
+        ");
 
+
+        //////// PREPARE LE TABLEAU 
+        $readyToPrintNHits;
+        $urlFullRows = $_SERVER["SCRIPT_NAME"];
+        foreach ($_GET as $key => $value) {
+            if ($key != "rows") $urlFullRows .= (($_SERVER["SCRIPT_NAME"] == $urlFullRows) ? "?" : "&") . $key . "=" . urlencode($value);
+        }
+        $urlFullRows .= "&rows=200";
+        // Simplifie et filtre la colonne inutile à l'utilisateur de com_ins
+        //$urlFullRows = (strpos($_SERVER['HTTP_REFERER'], "&rows=") != -1) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_REFERER'] . "&rows=-1" ;
+        if (!isset($_GET["rows"])) {
+            $nbrOfResults = 50;
+        } else {
+            $nbrOfResults = $_GET["rows"];
+        }
+
+
+        if ($nbrOfResults == 200 ) {
+            $readyToPrintNHits = "<h3> " . $nbrOfResults . "/". $text->nhits." résultats. <span class=\"red\"> Faites une recherche plus précise! </span> </h3> ";
+        } else if ($text->nhits < $nbrOfResults) $readyToPrintNHits = "<h3> " . $text->nhits . " résultats </h3>";
+        else $readyToPrintNHits = "<h3> " . $nbrOfResults . "/" . $text->nhits . " résultats <a href='" . $urlFullRows . "'> Voir plus de résultats </a> </h3>";
+
+
+
+
+        $readyToPrintTable = [];
+        foreach ($text->records as $key1 => $value) {
+            $newSubArray = [];
+
+            $newSubArray["Site Officiel"] = Application::getInstance()->getEtablismentURL($value->fields->etablissement);
+            foreach ($value->fields as $key2 => $value) {
+                if (!array_search($key2, Application::NOT_PRINTED_FACETS)) { // retire les colonnes inutiles
+                    $newSubArray[$key2] = $value;
+                }
+            }
+            $readyToPrintTable[$key1] = $newSubArray;
+        }
+    }
 }
 ?>
 
@@ -92,8 +133,6 @@ if (!$error) {
 if (!$error) {
     include("webComponents/head.php");
     include("webComponents/body.php");
-    include("webComponents/script.php");
 }
 ?>
-
 </html>

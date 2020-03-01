@@ -1,6 +1,5 @@
 <?php
 include("php/Application.php");
-include("webComponents/head.php");
 
 $diplomeMap = Application::getInstance()->selectGroupedParameters("diplome");
 
@@ -10,8 +9,12 @@ $locMap = Application::getInstance()->selectGroupedParameters("loc");
 
 $yearsMap = Application::getInstance()->selectGroupedParameters("years");
 
-?>
+$clickedMap = Application::getInstance()->mostClickedURLs();
 
+?>
+<!DOCTYPE html>
+<html lang="FR">
+<?php include("webComponents/head.php"); ?>
 <body>
     <nav>
         <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
@@ -24,6 +27,7 @@ $yearsMap = Application::getInstance()->selectGroupedParameters("years");
             <?php
             echo build_chart1($diplomeMap, "Diplome", "Nombre de recherches effectués");
             echo build_chart1($domaineMap, "Domaine", "Nombre de recherches effectués");
+            echo build_chart1($clickedMap, "URL", "Etablissement les plus visités");
             ?>
 
         </div>
@@ -34,8 +38,6 @@ $yearsMap = Application::getInstance()->selectGroupedParameters("years");
             ?>
 
 
-
-            </head>
             <!--https://canvasjs.com/jquery-charts/json-data-api-ajax-chart/-->
             <div id="chartContainer" style="height: 370px; width: 100%;"></div>
             <script>
@@ -86,4 +88,4 @@ $yearsMap = Application::getInstance()->selectGroupedParameters("years");
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
 </body>
-?
+</html>

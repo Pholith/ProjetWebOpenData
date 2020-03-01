@@ -3,7 +3,7 @@
         <a class="active" href="index.php"> <span class="verticalRealAlign"> accueil </span></a>
         <a href="search.php"> <span class="verticalRealAlign"> Recherche </span> </a>
     </nav>
-        <div class="bgImage"></div>
+    <div class="bgImage"></div>
     <section>
 
         <div class="search">
@@ -67,15 +67,20 @@
             </div>
         </div>
 
-        
+
         <div class="divTable">
             <?php
-            echo $readyToPrintNHits;
-            echo build_table($readyToPrintTable);
+            if (isset($readyToPrintNHits) && isset($readyToPrintTable)) {
+                echo $readyToPrintNHits;
+                echo build_table($readyToPrintTable);
+            }
             ?>
         </div>
     </section>
 
-    <?php include("footer.php"); ?>
+    <?php
+    include("footer.php"); 
+    include("script.php");
+    ?>
 
 </body>

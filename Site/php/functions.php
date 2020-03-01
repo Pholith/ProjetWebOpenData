@@ -1,5 +1,7 @@
 <?php
 
+require_once "Application.php";
+
 // code from https://stackoverflow.com/questions/2280394/how-can-i-check-if-a-url-exists-via-php
 function getHttpResponseCode($url, $followredirects = true)
 {
@@ -61,10 +63,12 @@ function build_chart1($map, String $titleCol1 = "", String $titleCol2 = ""): Str
     foreach ($map as $value) {
         $maxFromTheMap = max($maxFromTheMap, $value);
     }
+    if ($maxFromTheMap == 0) return "";
+    
     $coefficient = 300 / $maxFromTheMap;
 
     $result = "
-    <table class='chart' cellspacing='0' cellpadding='0' >
+    <table class='chart' >
       <tr>
         <th scope='col'><span class='auraltext'>" . $titleCol1 . "</span> </th>
         <th scope='col'><span class='auraltext'>" . $titleCol2 . "</span> </th>
@@ -74,7 +78,7 @@ function build_chart1($map, String $titleCol1 = "", String $titleCol2 = ""): Str
         $result .= "
         <tr>
           <td class='first'>" . $key . "</td>
-          <td class='value first'><img src='/images/bar.png' alt='' width='" . $value * $coefficient . "' height='16' />" . $value . "</td>
+          <td class='value first'><img src='/images/bar.png' alt='' width='" . round($value * $coefficient) . "' height='16' />" . $value . "</td>
         </tr>
         ";
     }
@@ -108,7 +112,7 @@ function build_table($array): String
         // ->fields ici pour accéder à tous les champs de l'objet js
         foreach ($value as $key2 => $value2) {
             if (strpos($value2, "ttp")) // http ne marche pas pour une raison obscure
-                $html .= '<td> <a href="redirection.php?url=' . htmlspecialchars($value2) . '"> Lien </a> </td>'; // Remplace le lien par un vrai lien <a> qui passe par la page de redirection
+                $html .= '<td> <a href="'. Application::getInstance()->getLoggerLink($value2) . '"> Lien </a> </td>'; // Remplace le lien par un vrai lien <a> qui passe par la page de redirection
             else
                 $html .= '<td>' . htmlspecialchars($value2) . '</td>';
         }

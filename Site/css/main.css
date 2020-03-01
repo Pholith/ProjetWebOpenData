@@ -106,7 +106,7 @@ section .buttons {
   justify-content: space-evenly;
 }
 
-section div.buttons button {
+section div.buttons a {
   display: inline-block;
   padding: 5px 10px 5px 10px;
   border-radius: 1px;
@@ -114,7 +114,7 @@ section div.buttons button {
   font-size: 1.1em;
   color: black;
   width: 190px;
-  height: 80px;
+  height: 2em;
   background-color: #fe3b27;
   border-color: #df1313;
   outline: 3px solid #df1313;
@@ -126,11 +126,11 @@ section div.buttons button {
   -webkit-transition: all 0.5s ease-out;
 }
 
-section div.buttons button:hover {
+section div.buttons a:hover {
   transform: translate(0, -5px);
 }
 
-section div.buttons button:active {
+section div.buttons a:active {
   border-color: #fe3b27 #fe3b27 #fe6a5b #fe6a5b;
   transition: all 0.01s ease-out;
   -webkit-transition: all 0.01s;
@@ -162,7 +162,7 @@ div.search {
 }
 
 section {
-  height: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -176,7 +176,7 @@ div.tabLeft {
 }
 div.tabRight {
   display: block;
-  height: 400px;
+  height: 420px;
   width: 800px;
 }
 
@@ -202,7 +202,7 @@ div.search form .submit {
 
 section .divTable {
   margin-top: 2em;
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 }
 
 table.results {
@@ -251,7 +251,13 @@ footer {
   text-align: center;
 }
 
+.red {
+  color: darkred;
+}
 
+#mapid p {
+  color: black;
+}
 /* ADMIN */
 
 section.admin {
