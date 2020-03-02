@@ -74,7 +74,7 @@ $clickedMap = Application::getInstance()->mostClickedURLs();
                         $("#chartContainer").CanvasJSChart(options);
 
                     }
-                    $.getJSON("http://localhost/API/getRequestsByDate.php", addData);
+                    $.getJSON("http://<?php echo $_SERVER["HTTP_HOST"];?>/API/getRequestsByDate.php", addData);
 
                 }
             </script>
